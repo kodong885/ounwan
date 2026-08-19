@@ -2,6 +2,7 @@ package com.kodong.ounwan.workout.service;
 
 
 import com.kodong.ounwan.user.entity.User;
+import com.kodong.ounwan.workout.dto.WorkoutExerciseDto;
 import com.kodong.ounwan.workout.dto.WorkoutRecordDto;
 import com.kodong.ounwan.workout.dto.WorkoutSessionDto;
 import com.kodong.ounwan.workout.entity.WorkoutExercise;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +31,31 @@ public class WorkoutRecordService {
         User user; // TODO
 
         LocalDate workoutDate = workoutRecordDto.getWorkoutDate();
-        WorkoutRecord workoutRecord = new WorkoutRecord(workoutDate);
+        WorkoutRecord workoutRecord = new WorkoutRecord(user, workoutDate);
+        workoutRecordRepository.save(workoutRecord);
 
+        for (WorkoutSessionDto workoutSessionDto : workoutRecordDto.getWorkoutSessionDtos()) {
+            WorkoutSession workoutSession = WorkoutSession.create(
+                    workoutRecord,
+                    workoutSessionDto.getWorkoutAt(),
+                    workoutSessionDto.getWorkoutDurationMinutes(),
+                    workoutSessionDto.getWorkoutBodyParts(),
+                    workoutSessionDto.getMemo()
+            );
+            workoutSessionRepository.save(workoutSession);
+            workoutRecord.addWorkoutSession(workoutSession);
 
+            for (WorkoutExerciseDto workoutExerciseDto : workoutSessionDto.getWorkoutExerciseDtos()) {
+                WorkoutExercise workoutExercise = WorkoutExercise.create(
+                        workoutSession,
+                        workoutExerciseDto.getWorkoutExerciseType(),
+                        workoutExerciseDto.getSets(),
+                        workoutExerciseDto.getSets()
+                );
+                workoutExerciseRepository.save(workoutExercise);
+                workoutSession.addWorkoutExercise(workoutExercise);
+            }
+        }
 
     }
 

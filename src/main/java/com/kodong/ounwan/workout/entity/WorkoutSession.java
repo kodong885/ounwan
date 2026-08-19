@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +29,8 @@ public class WorkoutSession {
     @JoinColumn(name = "workout_record_id")
     private WorkoutRecord workoutRecord;
 
-    @OneToMany(mappedBy = "workoutSession")
-    private List<WorkoutExercise> workoutExercises;
+    @OneToMany(mappedBy = "workoutSession") // mappedBy : 연관관계의 주인이 누구인지 알려주는 속성 (WorkoutExercise.java에 있는 workoutSession필드)
+    private List<WorkoutExercise> workoutExercises = new ArrayList<WorkoutExercise>();
 
     @Column(name = "workout_at", nullable = false)
     private LocalTime workoutAt;
@@ -49,10 +50,18 @@ public class WorkoutSession {
     @Column(name = "memo", nullable = true)
     private String memo;
 
-    // FIXME
-    public static WorkoutSession create() {
-        return WorkoutSession.builder()
+    public void addWorkoutExercise(WorkoutExercise workoutExercise) {
+        this.workoutExercises.add(workoutExercise);
+    }
 
+    public static WorkoutSession create(WorkoutRecord workoutRecord, LocalTime workoutAt, Integer workoutDurationMinutes, Set<WorkoutBodyPart> workoutBodyParts, String memo) {
+        return WorkoutSession.builder()
+                .workoutRecord(workoutRecord)
+                .workoutAt(workoutAt)
+                .workoutDurationMinutes(workoutDurationMinutes)
+                .workoutBodyParts(workoutBodyParts)
+                .memo(memo)
+                .build();
     }
 
 }

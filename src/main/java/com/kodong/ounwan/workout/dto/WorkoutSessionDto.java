@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class WorkoutSessionDto {
 
     private Integer workoutDurationMinutes;
 
-    private List<WorkoutBodyPart> workoutType;
+    private Set<WorkoutBodyPart> workoutBodyParts;
 
     private String memo;
 

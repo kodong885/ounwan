@@ -7,9 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +23,8 @@ import java.util.List;
 @Getter
 public class WorkoutRecord {
 
-    public WorkoutRecord(LocalDate workoutDate) {
+    public WorkoutRecord(User user, LocalDate workoutDate) {
+        this.user = user;
         this.workoutDate = workoutDate;
     }
 
@@ -33,7 +36,7 @@ public class WorkoutRecord {
     private User user;
 
     @OneToMany(mappedBy = "workoutRecord")
-    private List<WorkoutSession> workoutSession;
+    private List<WorkoutSession> workoutSessions = new ArrayList<WorkoutSession>();
 
     @Column(name = "workout_date", nullable = false)
     private LocalDate workoutDate;
@@ -53,6 +56,10 @@ public class WorkoutRecord {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void addWorkoutSession(WorkoutSession workoutSession) {
+        this.workoutSessions.add(workoutSession);
     }
 
 }
