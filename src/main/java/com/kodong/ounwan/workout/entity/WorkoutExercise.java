@@ -32,4 +32,14 @@ public class WorkoutExercise {
     @Column(name = "reps", nullable = false)
     private int reps;
 
+    // FIXME
+    public static WorkoutExercise create(WorkoutSession workoutSession, WorkoutExerciseType workoutExerciseType, int sets, int reps) {
+        return WorkoutExercise.builder()
+                .workoutSession(workoutSession)
+                .workoutExerciseType(workoutExerciseType)
+                .sets(sets)
+                .reps(reps)
+                .build();
+    }
+
 }

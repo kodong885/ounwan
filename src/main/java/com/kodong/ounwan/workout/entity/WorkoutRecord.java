@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,6 +20,10 @@ import java.util.List;
 @Builder
 @Getter
 public class WorkoutRecord {
+
+    public WorkoutRecord(LocalDate workoutDate) {
+        this.workoutDate = workoutDate;
+    }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,5 +37,22 @@ public class WorkoutRecord {
 
     @Column(name = "workout_date", nullable = false)
     private LocalDate workoutDate;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.kodong.ounwan.workout.entity.enums;
 
-public enum WorkoutType {
+public enum WorkoutBodyPart {
     CHEST,      // 가슴
     TRICEPS,    // 삼두
     BICEPS,     // 이두
