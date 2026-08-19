@@ -23,6 +23,7 @@ public class WorkoutExercise {
     @JoinColumn(name = "workout_session_id", nullable = false)
     private WorkoutSession workoutSession;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "workout_exercise_type", nullable = false)
     private WorkoutExerciseType workoutExerciseType;
 
