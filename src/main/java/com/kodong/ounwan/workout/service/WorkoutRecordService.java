@@ -68,11 +68,15 @@ public class WorkoutRecordService {
     @Transactional(readOnly = true)
     public void findWorkoutRecord(User currentUser, Long workoutRecordId) {
         // WorkoutRecord, WorkoutSession, workoutExercise 전체 조회함
+        WorkoutRecord workoutRecord = workoutRecordRepository.findWithSessions(currentUser, workoutRecordId)
+                .orElseThrow(() -> new Exception());
 
+        // return
     }
 
     @Transactional(readOnly = true)
     public void findWorkoutSession(User currentUser, Long workoutRecordId, Long workoutSessionId) {
+
 
     }
 
