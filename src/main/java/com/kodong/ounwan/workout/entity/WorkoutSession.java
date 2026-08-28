@@ -25,11 +25,11 @@ public class WorkoutSession {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "workout_record_id")
     private WorkoutRecord workoutRecord;
 
-    @OneToMany(mappedBy = "workoutSession", fetch = ) // mappedBy : 연관관계의 주인이 누구인지 알려주는 속성 (WorkoutExercise.java에 있는 workoutSession필드)
+    @OneToMany(mappedBy = "workoutSession", fetch = FetchType.LAZY) // mappedBy : 연관관계의 주인이 누구인지 알려주는 속성 (WorkoutExercise.java에 있는 workoutSession필드)
     private List<WorkoutExercise> workoutExercises = new ArrayList<WorkoutExercise>();
 
     @Column(name = "workout_at", nullable = false)

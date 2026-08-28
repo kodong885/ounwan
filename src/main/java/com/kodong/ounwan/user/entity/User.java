@@ -21,6 +21,7 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // FIXME (@OneToMany 다시 고민해보기)
     @OneToMany(mappedBy = "user")
     private List<WorkoutRecord> workoutRecords;
 

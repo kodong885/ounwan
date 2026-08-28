@@ -1,6 +1,7 @@
 package com.kodong.ounwan.workout.dto;
 
 
+import com.kodong.ounwan.workout.entity.WorkoutSession;
 import com.kodong.ounwan.workout.entity.enums.WorkoutBodyPart;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,18 @@ public class WorkoutSessionDto {
     private Set<WorkoutBodyPart> workoutBodyParts;
 
     private String memo;
+
+    public static WorkoutSessionDto from(WorkoutSession workoutSession) {
+        return new WorkoutSessionDto(
+                workoutSession.getWorkoutExercises().stream()
+                        .map(WorkoutExerciseDto::from).toList(),
+
+                workoutSession.getWorkoutAt(),
+                workoutSession.getWorkoutDurationMinutes(),
+                workoutSession.getWorkoutBodyParts(),
+                workoutSession.getMemo()
+        );
+
+    }
 
 }

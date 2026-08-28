@@ -12,6 +12,7 @@ import com.kodong.ounwan.workout.entity.WorkoutSession;
 import com.kodong.ounwan.workout.repository.WorkoutExerciseRepository;
 import com.kodong.ounwan.workout.repository.WorkoutRecordRepository;
 import com.kodong.ounwan.workout.repository.WorkoutSessionRepository;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class WorkoutRecordService {
 
     // TODO (반환값 수정 필요)
     @Transactional
-    public void createWorkoutRecord(WorkoutRecordDto workoutRecordDto) {
+    public WorkoutRecordDto createWorkoutRecord(WorkoutRecordDto workoutRecordDto) {
 
         User user; // TODO
 
@@ -66,23 +67,31 @@ public class WorkoutRecordService {
     // read
     // FIXME (매개변수 User currentUser 수정 필요)
     @Transactional(readOnly = true)
-    public void findWorkoutRecord(User currentUser, Long workoutRecordId) {
+    public WorkoutRecordDto findWorkoutRecord(User currentUser, Long workoutRecordId) {
         // WorkoutRecord, WorkoutSession, workoutExercise 전체 조회함
         WorkoutRecord workoutRecord = workoutRecordRepository.findWithSessions(currentUser, workoutRecordId)
-                .orElseThrow(() -> new Exception());
+                .orElseThrow(() -> new IllegalArgumentException("운동 기록을 찾을 수 없습니다."));
 
-        // return
-    }
-
-    @Transactional(readOnly = true)
-    public void findWorkoutSession(User currentUser, Long workoutRecordId, Long workoutSessionId) {
-
+        return WorkoutRecordDto.from(workoutRecord);
 
     }
 
     @Transactional(readOnly = true)
-    public void findWorkoutExercise(User currentUser, Long workoutRecordId, Long workoutSessionId, Long workoutExerciseId) {
+    public WorkoutSessionDto findWorkoutSession(User currentUser, Long workoutRecordId, Long workoutSessionId) {
 
+        WorkoutSession workoutSession = workoutSessionRepository.findWithExercises(currentUser, workoutRecordId, workoutSessionId)
+                .orElseThrow(() -> new IllegalIdentifierException("운동 세션을 찾을 수 없습니다."));
+
+        return WorkoutSessionDto.from(workoutSession);
+    }
+
+    @Transactional(readOnly = true)
+    public WorkoutExerciseDto findWorkoutExercise(User currentUser, Long workoutRecordId, Long workoutSessionId, Long workoutExerciseId) {
+
+        WorkoutExercise workoutExercise = workoutExerciseRepository.findByRecordPath(currentUser, workoutRecordId, workoutSessionId, workoutExerciseId)
+                .orElseThrow(() -> new IllegalArgumentException("운동 종목을 찾을 수 없습니다."));
+
+        return WorkoutExerciseDto.from(workoutExercise);
     }
 
     // update

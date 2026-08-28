@@ -19,7 +19,7 @@ public class WorkoutExercise {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "workout_session_id", nullable = false)
     private WorkoutSession workoutSession;
 
