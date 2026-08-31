@@ -35,7 +35,11 @@ public class WorkoutRecord {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "workoutRecord")
+    @OneToMany(
+            mappedBy = "workoutRecord",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<WorkoutSession> workoutSessions = new ArrayList<WorkoutSession>();
 
     @Column(name = "workout_date", nullable = false)

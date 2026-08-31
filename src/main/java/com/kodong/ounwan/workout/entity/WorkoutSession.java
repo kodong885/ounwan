@@ -29,7 +29,12 @@ public class WorkoutSession {
     @JoinColumn(name = "workout_record_id")
     private WorkoutRecord workoutRecord;
 
-    @OneToMany(mappedBy = "workoutSession", fetch = FetchType.LAZY) // mappedBy : 연관관계의 주인이 누구인지 알려주는 속성 (WorkoutExercise.java에 있는 workoutSession필드)
+    @OneToMany(
+            mappedBy = "workoutSession", // mappedBy : 연관관계의 주인이 누구인지 알려주는 속성 (WorkoutExercise.java에 있는 workoutSession필드)
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<WorkoutExercise> workoutExercises = new ArrayList<WorkoutExercise>();
 
     @Column(name = "workout_at", nullable = false)

@@ -46,7 +46,7 @@ public class WorkoutRecordService {
                     workoutSessionDto.getWorkoutBodyParts(),
                     workoutSessionDto.getMemo()
             );
-            workoutSessionRepository.save(workoutSession);
+            // workoutSessionRepository.save(workoutSession); (cascade = CascadeType.ALL)
             workoutRecord.addWorkoutSession(workoutSession);
 
             for (WorkoutExerciseDto workoutExerciseDto : workoutSessionDto.getWorkoutExerciseDtos()) {
@@ -54,11 +54,11 @@ public class WorkoutRecordService {
                         workoutSession,
                         workoutExerciseDto.getWorkoutExerciseType(),
                         workoutExerciseDto.getSets(),
-                        workoutExerciseDto.getSets()
+                        workoutExerciseDto.getReps()
                 );
-                workoutExerciseRepository.save(workoutExercise);
-                workoutSession.addWorkoutExercise(workoutExercise);
 
+                // workoutExerciseRepository.save(workoutExercise); (cascade = CascadeType.ALL)
+                workoutSession.addWorkoutExercise(workoutExercise);
             }
         }
 
